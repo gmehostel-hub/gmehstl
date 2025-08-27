@@ -168,12 +168,15 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/test', testRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
     message: 'Hostel Management System API is healthy',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    status: 'operational',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
