@@ -43,7 +43,7 @@ const securityHeaders = helmet({
 const allowedOrigins = [];
 
 if (process.env.NODE_ENV !== 'production') {
-  allowedOrigins.push('http://localhost:3000', 'http://localhost:3001');
+  allowedOrigins.push('http://localhost:3000','http://localhost:3001');
 }
 
 if (process.env.FRONTEND_URL) {
@@ -123,6 +123,16 @@ app.use(cors(corsOptions));
 app.use('/api/auth', authLimiter);
 app.use('/api', generalLimiter);
 app.use(securityLogger);
+
+// Compatibility redirect: handle clients calling '/auth/*' instead of '/api/auth/*'
+app.use((req, res, next) => {
+  if (req.path.startsWith('/auth/')) {
+    const target = `/api${req.path}`;
+    // Preserve method for non-GET by sending 308 Permanent Redirect
+    return res.redirect(308, target);
+  }
+  next();
+});
 
 // Body parsing with size limits
 app.use(express.json({ 
@@ -221,7 +231,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     console.log(`🔒 Security features enabled`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔗 API URL: http://localhost:${PORT}`);
-    console.log(`🏥 Health Check: http://localhost:${PORT}/health`);
+    console.log(`🏥 Health Check: http://localhost:${PORT}/api/health`);
     console.log('🚀 ===================================');
   });
 
