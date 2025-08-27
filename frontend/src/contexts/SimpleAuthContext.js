@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         // Verify token with backend
-        const { data } = await api.get('/auth/me');
+        const { data } = await api.get('/api/auth/me');
 
         if (data) {
           if (data && data.success && data.data) {
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const { data } = await api.post('/auth/login', { email, password });
+      const { data } = await api.post('/api/auth/login', { email, password });
 
       if (data && data.success) {
         const { token, user } = data;
@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // Call logout endpoint
-      await api.post('/auth/logout');
+      await api.post('/api/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {

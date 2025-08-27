@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = useCallback(async (email, password) => {
     try {
-      const { data } = await api.post('/auth/login', { email, password });
+      const { data } = await api.post('/api/auth/login', { email, password });
 
       if (data?.success) {
         const { token, user } = data;
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(async () => {
     try {
       // Call logout endpoint
-      await api.post('/auth/logout');
+      await api.post('/api/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
