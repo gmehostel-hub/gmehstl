@@ -3,7 +3,7 @@ import { secureStorage } from './securityUtils';
 
 // Create axios instance with base configuration
 const api = axios.create({
-  // Remove baseURL to use React's proxy configuration
+  baseURL: process.env.REACT_APP_API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
