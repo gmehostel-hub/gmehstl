@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import api from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -68,38 +69,29 @@ export const AuthProvider = ({ children }) => {
 
   const login = useCallback(async (email, password) => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const { data } = await api.post('/auth/login', { email, password });
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
+      if (data?.success) {
         const { token, user } = data;
-        
         // Store token and user data
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
-        
+
         setUser(user);
         setIsAuthenticated(true);
-        
+
         return { success: true, user };
-      } else {
-        return { 
-          success: false, 
-          message: data.message || 'Login failed' 
-        };
       }
+
+      return {
+        success: false,
+        message: data?.message || 'Login failed',
+      };
     } catch (error) {
       console.error('Login error:', error);
-      return { 
-        success: false, 
-        message: 'Network error. Please try again.' 
+      return {
+        success: false,
+        message: error?.response?.data?.message || 'Network error. Please try again.',
       };
     }
   }, []);
@@ -107,16 +99,7 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(async () => {
     try {
       // Call logout endpoint
-      const token = localStorage.getItem('token');
-      if (token) {
-        await fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-      }
+      await api.post('/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
