@@ -40,7 +40,11 @@ const securityHeaders = helmet({
 });
 
 // CORS configuration
-const allowedOrigins = [];
+const allowedOrigins = [
+  'https://hostel-management-frontend.vercel.app',
+  'https://hostel-management-frontend-*.vercel.app',
+  'https://hostel-management-frontend-*-gmehostel-4665s-projects.vercel.app'
+];
 
 // Add default development origins
 if (process.env.NODE_ENV !== 'production') {
@@ -72,27 +76,32 @@ console.log('Allowed CORS origins:', allowedOrigins);
 // Development CORS configuration (more permissive)
 const corsOptions = {
   origin: function (origin, callback) {
-    // In development, allow all origins
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`Allowing CORS for origin: ${origin}`);
-      return callback(null, true);
-    }
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
     
-    // In production, only allow specified origins
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
+    // Check if the origin is in the allowed list or matches a pattern
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      // Convert allowed origin to regex if it contains *
+      if (allowedOrigin.includes('*')) {
+        const regexPattern = new RegExp('^' + allowedOrigin.replace(/\*/g, '.*') + '$');
+        return regexPattern.test(origin);
+      }
+      return origin === allowedOrigin;
+    });
+
+    if (!isAllowed) {
+      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      console.warn(msg);
+      return callback(new Error(msg), false);
     }
-    
-    const msg = `The CORS policy for this site does not allow access from ${origin}.`;
-    console.warn(msg);
-    console.warn('Allowed origins:', allowedOrigins);
-    return callback(new Error(msg), false);
+    return callback(null, true);
   },
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'x-access-token'],
-  exposedHeaders: ['x-access-token']
+  exposedHeaders: ['x-access-token'],
+  maxAge: 86400 // 24 hours
 };
 
 // Rate limiting - DISABLED

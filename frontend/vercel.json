@@ -9,8 +9,12 @@
   ],
   "routes": [
     {
-      "src": "^/static/(.*)",
+      "src": "/static/(.*)",
       "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     },
     {
       "src": "^/favicon.ico",
