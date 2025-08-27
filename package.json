@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.1",
+    "framer-motion": "^12.23.12",
+    "mongoose": "^8.17.0",
+    "swiper": "^11.2.10",
+    "xlsx": "^0.18.5"
+  }
+}

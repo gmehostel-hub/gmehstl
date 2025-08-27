@@ -1,0 +1,427 @@
+/* Mobile Optimizations for Hostel Management System */
+/* Ensures perfect mobile experience when hosted online */
+
+/* Base Mobile Styles */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile Viewport Fixes */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+/* Mobile-First Responsive Design */
+@media (max-width: 768px) {
+  /* Landing Page Mobile Optimizations */
+  .landing-container {
+    padding: 10px !important;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .landing-hero {
+    padding: 20px 15px !important;
+    text-align: center;
+  }
+
+  .landing-title {
+    font-size: 2rem !important;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .landing-subtitle {
+    font-size: 1rem !important;
+    margin-bottom: 2rem;
+  }
+
+  /* Navigation Mobile Optimizations */
+  .navbar {
+    padding: 10px 15px !important;
+    flex-wrap: wrap;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem !important;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .nav-link {
+    padding: 10px 0 !important;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Login Modal Mobile Optimizations */
+  .login-modal {
+    margin: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+  }
+
+  .login-modal-content {
+    padding: 20px !important;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .login-form {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-control {
+    padding: 15px !important;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    border-radius: 8px !important;
+  }
+
+  .btn {
+    padding: 15px 20px !important;
+    font-size: 16px !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+
+  /* Quick Login Buttons Mobile */
+  .quick-login-buttons {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .quick-login-btn {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Dashboard Mobile Optimizations */
+  .dashboard-container {
+    padding: 10px !important;
+  }
+
+  .dashboard-sidebar {
+    position: fixed !important;
+    top: 0;
+    left: -100%;
+    width: 280px !important;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  .dashboard-sidebar.open {
+    left: 0;
+  }
+
+  .dashboard-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .mobile-menu-toggle {
+    display: block !important;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    background: rgba(30, 64, 175, 0.9);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+  }
+
+  /* Cards and Tables Mobile */
+  .card {
+    margin-bottom: 1rem !important;
+    border-radius: 12px !important;
+  }
+
+  .table-responsive {
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    font-size: 0.875rem !important;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px !important;
+    white-space: nowrap;
+  }
+
+  /* Form Mobile Optimizations */
+  .form-row {
+    flex-direction: column !important;
+  }
+
+  .form-col {
+    width: 100% !important;
+    margin-bottom: 1rem;
+  }
+
+  /* Modal Mobile Optimizations */
+  .modal {
+    padding: 0 !important;
+  }
+
+  .modal-dialog {
+    margin: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+  }
+
+  .modal-content {
+    border-radius: 0 !important;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    padding: 15px 20px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .modal-body {
+    padding: 20px !important;
+  }
+
+  .modal-footer {
+    padding: 15px 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    max-width: 100% !important;
+    padding: 0 20px;
+  }
+
+  .dashboard-sidebar {
+    width: 250px !important;
+  }
+
+  .dashboard-main {
+    margin-left: 250px !important;
+  }
+
+  .login-modal {
+    width: 90% !important;
+    max-width: 500px !important;
+  }
+}
+
+/* Touch Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .btn:hover {
+    transform: none !important;
+  }
+
+  .card:hover {
+    transform: none !important;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Increase touch targets */
+  .btn,
+  .nav-link,
+  .form-control,
+  .dropdown-item {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+}
+
+/* Landscape Mobile Optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+  .landing-hero {
+    padding: 15px !important;
+  }
+
+  .login-modal-content {
+    padding: 15px !important;
+  }
+
+  .navbar {
+    padding: 8px 15px !important;
+  }
+}
+
+/* High DPI Display Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .logo,
+  .icon {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Dark Mode Mobile Optimizations */
+@media (prefers-color-scheme: dark) {
+  .form-control {
+    background-color: rgba(30, 41, 59, 0.8) !important;
+    border-color: rgba(71, 85, 105, 0.5) !important;
+    color: white !important;
+  }
+
+  .modal-content {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+}
+
+/* iOS Specific Optimizations */
+@supports (-webkit-touch-callout: none) {
+  .form-control {
+    font-size: 16px !important; /* Prevents zoom */
+  }
+
+  .btn {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 8px !important;
+  }
+
+  /* Safe area for iPhone X and newer */
+  @media (max-width: 768px) {
+    .landing-container {
+      padding-top: env(safe-area-inset-top, 20px) !important;
+      padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+    }
+
+    .dashboard-main {
+      padding-top: env(safe-area-inset-top, 20px) !important;
+      padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+    }
+  }
+}
+
+/* Android Specific Optimizations */
+@media (max-width: 768px) {
+  .android .form-control {
+    font-size: 16px !important;
+  }
+
+  .android .btn {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Performance Optimizations for Mobile */
+.mobile-optimized {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Accessibility Improvements for Mobile */
+@media (max-width: 768px) {
+  .sr-only-mobile {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* Focus indicators for mobile */
+  .btn:focus,
+  .form-control:focus,
+  .nav-link:focus {
+    outline: 2px solid #3b82f6 !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Loading States for Mobile */
+.mobile-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.mobile-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(59, 130, 246, 0.3);
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mobile-Specific Utilities */
+.mobile-only {
+  display: none !important;
+}
+
+.desktop-only {
+  display: block !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-text-center {
+    text-align: center !important;
+  }
+
+  .mobile-full-width {
+    width: 100% !important;
+  }
+
+  .mobile-margin-bottom {
+    margin-bottom: 1rem !important;
+  }
+}
