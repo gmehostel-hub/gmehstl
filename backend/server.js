@@ -40,35 +40,18 @@ const securityHeaders = helmet({
 });
 
 // CORS configuration
-const allowedOrigins = [
-  'https://hostel-management-frontend.vercel.app',
-  'https://hostel-management-frontend-*.vercel.app',
-  'https://hostel-management-frontend-*-gmehostel-4665s-projects.vercel.app'
-];
+const allowedOrigins = [];
 
-// Add default development origins
 if (process.env.NODE_ENV !== 'production') {
-  allowedOrigins.push(
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:3001'
-  );
+  allowedOrigins.push('http://localhost:3000', 'http://localhost:3001');
 }
 
-// Add CORS_ORIGINS from environment if it exists
-if (process.env.CORS_ORIGINS) {
-  const origins = process.env.CORS_ORIGINS.split(',').map(origin => origin.trim());
-  origins.forEach(origin => {
-    if (!allowedOrigins.includes(origin)) {
-      allowedOrigins.push(origin);
-    }
-  });
-}
-
-// Add FRONTEND_URL from environment if it exists
-if (process.env.FRONTEND_URL && !allowedOrigins.includes(process.env.FRONTEND_URL)) {
+if (process.env.FRONTEND_URL) {
   allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+if (process.env.CORS_ORIGINS) {
+  allowedOrigins.push(...process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()));
 }
 
 console.log('Allowed CORS origins:', allowedOrigins);
@@ -104,21 +87,19 @@ const corsOptions = {
   maxAge: 86400 // 24 hours
 };
 
-// Rate limiting - DISABLED
-// const authLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   max: 5, // limit each IP to 5 requests per windowMs
-//   message: 'Too many authentication attempts, please try again later.'
-// });
+// Rate limiting
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 auth requests per windowMs
+  message: 'Too many authentication attempts, please try again later.'
+});
 
-// const generalLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   max: 100 // limit each IP to 100 requests per windowMs
-// });
-
-// Dummy middleware to replace rate limiters
-const authLimiter = (req, res, next) => next();
-const generalLimiter = (req, res, next) => next();
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200, // limit each IP to 200 requests per windowMs
+  standardHeaders: true, 
+  legacyHeaders: false,
+});
 
 // Security logging middleware
 const securityLogger = (req, res, next) => {
@@ -133,9 +114,8 @@ const sanitizeData = (req, res, next) => {
   });
 };
 
-// Input validation middleware - DISABLED
-// const validateInput = hpp();
-const validateInput = (req, res, next) => next(); // Dummy middleware
+// Input validation middleware
+const validateInput = hpp({ whitelist: [ 'id' ] });
 
 // Apply security middleware
 app.use(securityHeaders);
@@ -161,11 +141,9 @@ app.use(express.urlencoded({
 // Cookie parser for secure cookie handling
 app.use(cookieParser());
 
-// Data sanitization middleware - DISABLED
-// app.use(sanitizeData);
+app.use(sanitizeData);
 
-// Input validation and sanitization - DISABLED
-// app.use(validateInput);
+app.use(validateInput);
 
 // API Routes
 app.use('/api/auth', authRoutes);

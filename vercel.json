@@ -1,23 +1,15 @@
 {
   "version": 2,
+  "public": true,
   "builds": [
     {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build",
-        "zeroConfig": true
-      }
+      "config": { "distDir": "build" }
     }
   ],
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/favicon.ico", "dest": "/favicon.ico" },
-    { "src": "/manifest.json", "dest": "/manifest.json" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "rewrites": [
-    { "source": "/:path*", "destination": "/index.html" }
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
